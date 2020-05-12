@@ -32,7 +32,7 @@ typedef struct inputs
 
 void generate_input(int *input_data, int size_of_input);
 
-void bubble_sort(int *input_data, int *running_time_of_sort);
+void bubble_sort(Inputs *input_data, int *running_time_of_sort);
 void insertion_sort(int *input_data, int *running_time_of_sort);
 void merge_sort(int *input_data, int *running_time_of_sort);
 void quick_sort(int *input_data, int *running_time_of_sort);
@@ -75,9 +75,9 @@ int main(void)
         input_data[2].running_time[4].key = "Radix Sort";
         input_data[2].running_time[5].key = "Bucket Sort";
 
-        bubble_sort(input_data[0].data, &input_data[0].running_time[0].value);
-        bubble_sort(input_data[1].data, &input_data[1].running_time[0].value);
-        bubble_sort(input_data[2].data, &input_data[2].running_time[0].value);
+        bubble_sort(input_data[0], &input_data[0].running_time[0].value);
+        bubble_sort(input_data[1], &input_data[1].running_time[0].value);
+        bubble_sort(input_data[2], &input_data[2].running_time[0].value);
         insertion_sort(input_data[0].data, &input_data[0].running_time[1].value);
         insertion_sort(input_data[1].data, &input_data[1].running_time[1].value);
         insertion_sort(input_data[2].data, &input_data[2].running_time[1].value);
@@ -111,8 +111,16 @@ void generate_input(int *input_data, int size_of_input)
         }
 }
 
-void bubble_sort(int *input_data, int *running_time_of_sort)
+void bubble_sort(Inputs *input_data, int *running_time_of_sort)
 {
+        for (int i = input_data->key - 1; i > 0; i--)
+        {
+                for (int j = 0; j < i; j++)
+                {
+                        if (input_data->data[j] > input_data->data[j + 1])
+                                swap(&input_data->data[j], &input_data->data[j]);
+                }
+        }
 }
 void insertion_sort(int *input_data, int *running_time_of_sort)
 {
