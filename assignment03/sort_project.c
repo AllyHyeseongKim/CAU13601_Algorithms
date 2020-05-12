@@ -1,31 +1,6 @@
 #include <stdio.h>
 #include <time.h>
 
-/*
-typedef struct dictionary
-{
-        char *key;
-        double value;
-} Dictionary;
-
-int key_to_value(Dictionary *dictionary, char *key)
-{
-        double value;
-
-        for (int i = 0; i < sizeof(dictionary) / sizeof(dictionary[0]); i++)
-        {
-                if (dictionary[i].key == key)
-                {
-                        value = dictionary[i].value;
-                }
-                else
-                        ;
-        }
-
-        return value;
-}
-*/
-
 typedef struct inputs
 {
         int key;
@@ -58,13 +33,14 @@ int get(int num_bucket)
 void generate_input(int *, int);
 void merge_result(int *, int, int, int);
 int partition(int *, int, int);
+void put_bucket(int *, int);
 
 void bubble_sort(Inputs *);
 void insertion_sort(Inputs *);
-void merge_sort(Inputs *input_data, int, int);
-void quick_sort(Inputs *input_data, int, int);
-void radix_sort(Inputs *input_data);
-void bucket_sort(int *input_data, int *running_time_of_sort);
+void merge_sort(Inputs *, int, int);
+void quick_sort(Inputs *, int, int);
+void radix_sort(Inputs *);
+void bucket_sort(Inputs *);
 
 void print_table(Inputs *input_data);
 
@@ -75,38 +51,14 @@ int main(void)
         input_data[0].key = 10;
         input_data[0].data = malloc(sizeof(int) * input_data[0].key);
         generate_input(input_data[0].data, input_data[0].key);
-        /*
-        input_data[0].running_time[0].key = "Bubble Sort";
-        input_data[0].running_time[1].key = "Insertion Sort";
-        input_data[0].running_time[2].key = "Merge Sort";
-        input_data[0].running_time[3].key = "Quick Sort";
-        input_data[0].running_time[4].key = "Radix Sort";
-        input_data[0].running_time[5].key = "Bucket Sort";
-        */
 
         input_data[1].key = 100;
         input_data[1].data = malloc(sizeof(int) * input_data[1].key);
         generate_input(input_data[1].data, input_data[1].key);
-        /*
-        input_data[1].running_time[0].key = "Bubble Sort";
-        input_data[1].running_time[1].key = "Insertion Sort";
-        input_data[1].running_time[2].key = "Merge Sort";
-        input_data[1].running_time[3].key = "Quick Sort";
-        input_data[1].running_time[4].key = "Radix Sort";
-        input_data[1].running_time[5].key = "Bucket Sort";
-        */
 
         input_data[2].key = 1000;
         input_data[2].data = malloc(sizeof(int) * input_data[2].key);
         generate_input(input_data[2].data, input_data[2].key);
-        /*
-        input_data[2].running_time[0].key = "Bubble Sort";
-        input_data[2].running_time[1].key = "Insertion Sort";
-        input_data[2].running_time[2].key = "Merge Sort";
-        input_data[2].running_time[3].key = "Quick Sort";
-        input_data[2].running_time[4].key = "Radix Sort";
-        input_data[2].running_time[5].key = "Bucket Sort";
-        */
 
         bubble_sort(&input_data[0]);
         bubble_sort(&input_data[1]);
@@ -123,9 +75,9 @@ int main(void)
         radix_sort(&input_data[0]);
         radix_sort(&input_data[1]);
         radix_sort(&input_data[2]);
-        bucket_sort(input_data[0].data, &input_data[0].running_time[5].value);
-        bucket_sort(input_data[1].data, &input_data[1].running_time[5].value);
-        bucket_sort(input_data[2].data, &input_data[2].running_time[5].value);
+        bucket_sort(&input_data[0]);
+        bucket_sort(&input_data[1]);
+        bucket_sort(&input_data[2]);
 
         print_table(input_data);
 
@@ -304,15 +256,79 @@ void radix_sort(Inputs *input_data)
         end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
-void bucket_sort(int *input_data, int *running_time_of_sort)
+void put_bucket(int *bucket, int data)
+{
+        int point = 0;
+        int j = 0;
+
+        for (j = 0; bucket[j] > 0; j++)
+        {
+                if (bucket[j] < data)
+                        point = j + 1;
+        }
+        int top = j + 1;
+
+        for (int i = top; i > point; i--)
+        {
+                bucket[i] = bucket[i - 1];
+        }
+        bucket[point] = data;
+}
+void bucket_sort(Inputs *input_data)
 {
         clock_t start;
         clock_t end;
+        int num;
+        int num_buckets;
+        int size_buckets;
+        int **bucket;
+        int bucket_num;
+
+        switch (input_data->key / 10)
+        {
+        case 1:
+                num = 2;
+                num_buckets = 5;
+                size_buckets = input_data->key / num_buckets;
+                bucket = (int **)malloc(sizeof(int *) * num_buckets);
+                for (int i = 0; i < num_buckets; i++)
+                        bucket[i] = (int *)malloc(sizeof(int) * size_buckets);
+                break;
+        case 2:
+                num = 10;
+                num_buckets = 10;
+                size_buckets = input_data->key / num_buckets;
+                bucket = (int **)malloc(sizeof(int *) * num_buckets);
+                for (int i = 0; i < num_buckets; i++)
+                        bucket[i] = (int *)malloc(sizeof(int) * size_buckets);
+                break;
+        case 3:
+                num = 20;
+                num_buckets = 20;
+                size_buckets = input_data->key / num_buckets;
+                bucket = (int **)malloc(sizeof(int *) * num_buckets);
+                for (int i = 0; i < num_buckets; i++)
+                        bucket[i] = (int *)malloc(sizeof(int) * size_buckets);
+                break;
+        }
 
         start = clock();
 
+        for (int i = 0; i < input_data->key; i++)
+        {
+                if (input_data->data % num == 0)
+                        bucket_num = data / num - 1;
+                else
+                        bucket_num = data / num;
+                put_bucket(&bucket[bucket_num], input_data->data);
+        }
+
         end = clock();
         input_data->running_time[0] = (double)(end - start);
+
+        for (int i = 0; i < num_buckets; i++)
+                free(bucket[i]);
+        free(bucket);
 }
 
 void print_table(Inputs *input_data){};
