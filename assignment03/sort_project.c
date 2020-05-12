@@ -44,7 +44,7 @@ void swap(int *a, int *b)
 void generate_input(int *input_data, int size_of_input);
 
 void bubble_sort(Inputs *input_data);
-void insertion_sort(int *input_data, int *running_time_of_sort);
+void insertion_sort(Inputs *input_data);
 void merge_sort(int *input_data, int *running_time_of_sort);
 void quick_sort(int *input_data, int *running_time_of_sort);
 void radix_sort(int *input_data, int *running_time_of_sort);
@@ -95,9 +95,9 @@ int main(void)
         bubble_sort(&input_data[0]);
         bubble_sort(&input_data[1]);
         bubble_sort(&input_data[2]);
-        insertion_sort(input_data[0].data, &input_data[0].running_time[1].value);
-        insertion_sort(input_data[1].data, &input_data[1].running_time[1].value);
-        insertion_sort(input_data[2].data, &input_data[2].running_time[1].value);
+        insertion_sort(&input_data[0]);
+        insertion_sort(&input_data[1]);
+        insertion_sort(&input_data[2]);
         merge_sort(input_data[0].data, &input_data[0].running_time[2].value);
         merge_sort(input_data[1].data, &input_data[1].running_time[2].value);
         merge_sort(input_data[2].data, &input_data[2].running_time[2].value);
@@ -147,12 +147,24 @@ void bubble_sort(Inputs *input_data)
         end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
-void insertion_sort(int *input_data, int *running_time_of_sort)
+void insertion_sort(Inputs *input_data)
 {
         clock_t start;
         clock_t end;
+        int key = 0;
 
         start = clock();
+
+        for (int i = 1; i < input_data->key; i++)
+        {
+                key = input_data->data[i];
+                int j = i - 1;
+                for (; j > 0 && input_data->data[i] > key; j--)
+                {
+                        input_data->data[j + 1] = input_data->data[j];
+                }
+                input_data->data[j + 1] = key;
+        }
 
         end = clock();
         input_data->running_time[0] = (double)(end - start);
