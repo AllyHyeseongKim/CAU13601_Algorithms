@@ -44,15 +44,15 @@ void swap(int *a, int *b)
 int sorted_inputs[1000];
 
 int bucket_queue[10][1000];
-int front = -1;
-int rear = -1;
+int front[10] = -1;
+int rear[10] = -1;
 void put(int num_bucket, int input)
 {
-        bucket_queue[num_bucket][++rear] = input;
+        bucket_queue[num_bucket][++rear[num_bucket]] = input;
 }
 int get(int num_bucket)
 {
-        return bucket_queue[num_bucket][front++];
+        return bucket_queue[num_bucket][front[num_bucket]++];
 }
 
 void generate_input(int *, int);
@@ -63,7 +63,7 @@ void bubble_sort(Inputs *);
 void insertion_sort(Inputs *);
 void merge_sort(Inputs *input_data, int, int);
 void quick_sort(Inputs *input_data, int, int);
-void radix_sort(int *input_data, int *running_time_of_sort);
+void radix_sort(Inputs *input_data);
 void bucket_sort(int *input_data, int *running_time_of_sort);
 
 void print_table(Inputs *input_data);
@@ -120,9 +120,9 @@ int main(void)
         quick_sort(&input_data[0], 0, input_data[0].key - 1);
         quick_sort(&input_data[1], 0, input_data[1].key - 1);
         quick_sort(&input_data[2], 0, input_data[2].key - 1);
-        radix_sort(input_data[0].data, &input_data[0].running_time[4].value);
-        radix_sort(input_data[1].data, &input_data[1].running_time[4].value);
-        radix_sort(input_data[2].data, &input_data[2].running_time[4].value);
+        radix_sort(&input_data[0]);
+        radix_sort(&input_data[1]);
+        radix_sort(&input_data[2]);
         bucket_sort(input_data[0].data, &input_data[0].running_time[5].value);
         bucket_sort(input_data[1].data, &input_data[1].running_time[5].value);
         bucket_sort(input_data[2].data, &input_data[2].running_time[5].value);
@@ -267,17 +267,41 @@ void quick_sort(Inputs *input_data, int left_point, int right_point)
         end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
-void radix_sort(int *input_data, int *running_time_of_sort)
+void radix_sort(Inputs *input_data)
 {
         clock_t start;
         clock_t end;
         int digit = 0;
         for (int i = input_data->data[0]; i < digit; i /= 10)
-                start = clock();
+                digit++;
+        int temp = 0;
+
+        start = clock();
 
         for (int i = 0; i < digit; i++)
+        {
+                for (int j = 0; j < input_data->key; j++)
+                {
+                        int bucket_num = input_data->data[j];
+                        if (i != 0)
+                        {
+                                for (int k = 0; k < i; k++)
+                                        temp = bucket_num / 10;
+                                bucket_num = temp % 10;
+                        }
+                        else
+                                bucket_num = input_data->data[j] % 10;
+                        put(bucket_num, input_data->data);
+                }
+                int k = 0;
+                for (int j = 0; j < 10; j++)
+                {
+                        for (; front[j] != rear[j];)
+                                input_data->data[k++] = get(j);
+                }
+        }
 
-                end = clock();
+        end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
 void bucket_sort(int *input_data, int *running_time_of_sort)
