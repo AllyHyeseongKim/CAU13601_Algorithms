@@ -33,6 +33,14 @@ typedef struct inputs
         double running_time[6];
 } Inputs;
 
+void swap(int *a, int *b)
+{
+        int temp = 0;
+        temp = *a;
+        *a = *b;
+        *b = temp;
+}
+
 void generate_input(int *input_data, int size_of_input);
 
 void bubble_sort(Inputs *input_data);
