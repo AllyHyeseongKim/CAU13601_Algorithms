@@ -36,7 +36,8 @@ int trial = 0;
 void generate_input(int *, int);
 void merge(Inputs *, int, int, int);
 void merge_sorting(Inputs *, int, int);
-int partition(int *, int, int);
+int partition(Inputs *, int, int);
+void quick_sorting(Inputs *, int, int);
 void put_bucket(int *, int);
 
 void bubble_sort(Inputs *);
@@ -305,24 +306,40 @@ void merge_sort(Inputs *input_data, int left_point, int right_point)
         end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
-int partition(int *data, int left_point, int right_point)
+int partition(Inputs *input_data, int left_point, int right_point)
 {
-        int pivot = data[left_point];
-        int low = left_point + 1;
-        int high = right_point;
+        int pivot = input_data->data[right_point];
+        int i = left_point - 1;
 
-        for (; low <= high;)
+        for (int j = left_point; j <= right_point - 1; j++)
         {
-                for (; low <= high && pivot >= data[low];)
-                        low++;
-                for (; high >= left_point + 1 && pivot <= data[high];)
-                        high--;
-                if (low <= high)
-                        swap(&data[low], &data[high]);
+                if (input_data->data[j] < pivot)
+                {
+                        swap(&input_data->data[++i], &input_data->data[j]);
+                        printf("[TRIAL%2d]      ", trial++);
+                        for (int l = 0; l < input_data->key; l++)
+                                printf("%2d    ", input_data->data[l]);
+                        printf("\n");
+                }
         }
-        swap(&data[left_point], &data[high]);
 
-        return high;
+        swap(&input_data->data[i + 1], &input_data->data[right_point]);
+        printf("[TRIAL%2d]      ", trial++);
+        for (int l = 0; l < input_data->key; l++)
+                printf("%2d    ", input_data->data[l]);
+        printf("\n");
+
+        return i + 1;
+}
+void quick_sorting(Inputs *input_data, int left_point, int right_point)
+{
+        if (left_point < right_point)
+        {
+                int part = partition(input_data, left_point, right_point);
+
+                quick_sorting(input_data, left_point, part - 1);
+                quick_sorting(input_data, part + 1, right_point);
+        }
 }
 void quick_sort(Inputs *input_data, int left_point, int right_point)
 {
@@ -332,12 +349,7 @@ void quick_sort(Inputs *input_data, int left_point, int right_point)
 
         start = clock();
 
-        if (left_point < right_point)
-        {
-                int pivot = partition(input_data->data, left_point, right_point);
-                quick_sort(input_data, left_point, pivot - 1);
-                quick_sort(input_data, pivot, right_point);
-        }
+        quick_sorting(input_data, left_point, right_point);
 
         end = clock();
         input_data->running_time[0] = (double)(end - start);
