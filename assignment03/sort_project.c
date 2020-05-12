@@ -421,11 +421,11 @@ void bucket_sort(Inputs *input_data)
 {
         clock_t start;
         clock_t end;
-        int num;
-        int num_buckets;
-        int size_buckets;
+        int num = 0;
+        int num_buckets = 0;
+        int size_buckets = 0;
         int **bucket;
-        int bucket_num;
+        int bucket_num = 0;
 
         switch (input_data->key / 10)
         {
@@ -454,6 +454,7 @@ void bucket_sort(Inputs *input_data)
                         bucket[i] = (int *)malloc(sizeof(int) * size_buckets);
                 break;
         }
+        int count[num_buckets];
 
         start = clock();
 
@@ -463,7 +464,18 @@ void bucket_sort(Inputs *input_data)
                         bucket_num = input_data->data[i] / num - 1;
                 else
                         bucket_num = input_data->data[i] / num;
-                put_bucket(bucket[bucket_num], *input_data->data);
+                int j = 0;
+                for (; j < size_buckets && bucket[bucket_num][j] < input_data->data[i] && bucket[bucket_num][j] > 0;)
+                        j++;
+                if (bucket[bucket_num][0] > 0)
+                {
+                        int k = 0;
+                        for (; k < size_buckets && bucket[bucket_num][k] > 0;)
+                                k++;
+                        for (int l = k; k > j; k--)
+                                bucket[bucket_num][l] = bucket[bucket_num][l - 1];
+                }
+                bucket[bucket_num][j] = input_data->data[i];
         }
         int k = 0;
         for (int i = 0; i < num_buckets; i++)
