@@ -44,12 +44,13 @@ void swap(int *a, int *b)
 int sorted_inputs[1000];
 
 void generate_input(int *, int);
-void merge_result(Inputs *input_data, int left_point, int middle_point, int right_point);
+void merge_result(int *, int, int, int);
+int partition(int *, int, int);
 
 void bubble_sort(Inputs *);
 void insertion_sort(Inputs *);
-void merge_sort(Inputs *input_data, int left_point, int right_point);
-void quick_sort(int *input_data, int *running_time_of_sort);
+void merge_sort(Inputs *input_data, int, int);
+void quick_sort(Inputs *input_data, int, int);
 void radix_sort(int *input_data, int *running_time_of_sort);
 void bucket_sort(int *input_data, int *running_time_of_sort);
 
@@ -104,9 +105,9 @@ int main(void)
         merge_sort(&input_data[0], 0, input_data[0].key - 1);
         merge_sort(&input_data[1], 0, input_data[1].key - 1);
         merge_sort(&input_data[2], 0, input_data[2].key - 1);
-        quick_sort(input_data[0].data, &input_data[0].running_time[3].value);
-        quick_sort(input_data[1].data, &input_data[1].running_time[3].value);
-        quick_sort(input_data[2].data, &input_data[2].running_time[3].value);
+        quick_sort(&input_data[0], 0, input_data[0].key - 1);
+        quick_sort(&input_data[1], 0, input_data[1].key - 1);
+        quick_sort(&input_data[2], 0, input_data[2].key - 1);
         radix_sort(input_data[0].data, &input_data[0].running_time[4].value);
         radix_sort(input_data[1].data, &input_data[1].running_time[4].value);
         radix_sort(input_data[2].data, &input_data[2].running_time[4].value);
@@ -172,7 +173,7 @@ void insertion_sort(Inputs *input_data)
         end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
-void merge_result(Inputs *input_data, int left_point, int middle_point, int right_point)
+void merge_result(int *data, int left_point, int middle_point, int right_point)
 {
         int i = left_point;
         int j = middle_point;
@@ -180,25 +181,25 @@ void merge_result(Inputs *input_data, int left_point, int middle_point, int righ
 
         for (; i <= middle_point && j <= right_point;)
         {
-                if (input_data->data[i] <= input_data->data[j])
-                        sorted_inputs[k++] = input_data->data[i++];
+                if (data[i] <= data[j])
+                        sorted_inputs[k++] = data[i++];
                 else
-                        sorted_inputs[k++] = input_data->data[j++];
+                        sorted_inputs[k++] = data[j++];
         }
 
         if (i < middle_point)
         {
                 for (int l = j; l <= right_point; l++)
-                        sorted_inputs[k++] = input_data->data[l];
+                        sorted_inputs[k++] = data[l];
         }
         else
         {
                 for (int l = i; l <= middle_point; l++)
-                        sorted_inputs[k++] = input_data->data[l];
+                        sorted_inputs[k++] = data[l];
         }
 
         for (int l = left_point; l <= right_point; l++)
-                input_data->data[l] = sorted_inputs[l];
+                data[l] = sorted_inputs[l];
 }
 void merge_sort(Inputs *input_data, int left_point, int right_point)
 {
@@ -212,17 +213,44 @@ void merge_sort(Inputs *input_data, int left_point, int right_point)
         {
                 merge_sort(&input_data, left_point, middle_point);
                 merge_sort(&input_data, middle_point + 1, right_point);
-                merge_result(&input_data, left_point, middle_point, right_point);
+                merge_result(&input_data->data, left_point, middle_point, right_point);
         }
+
         end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
-void quick_sort(int *input_data, int *running_time_of_sort)
+int partition(int *data, int left_point, int right_point)
+{
+        int pivot = data[left_point];
+        int low = left_point + 1;
+        int high = right_point;
+
+        for (; low <= high;)
+        {
+                for (; low <= high && pivot >= data[low];)
+                        low++;
+                for (; high >= left_point + 1 && pivot <= data[high];)
+                        high--;
+                if (low <= high)
+                        swap(&data[low], &data[high]);
+        }
+        swap(&data[left_point], &data[high]);
+
+        return high;
+}
+void quick_sort(Inputs *input_data, int left_point, int right_point)
 {
         clock_t start;
         clock_t end;
 
         start = clock();
+
+        if (left_point < right_point)
+        {
+                int pivot = partition(input_data->data, left_point, right_point);
+                quick_sort(&input_data, left_point, pivot - 1);
+                quick_sort(&input_data, pivot, right_point);
+        }
 
         end = clock();
         input_data->running_time[0] = (double)(end - start);
