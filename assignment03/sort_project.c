@@ -43,6 +43,18 @@ void swap(int *a, int *b)
 
 int sorted_inputs[1000];
 
+int bucket_queue[10][1000];
+int front = -1;
+int rear = -1;
+void put(int num_bucket, int input)
+{
+        bucket_queue[num_bucket][++rear] = input;
+}
+int get(int num_bucket)
+{
+        return bucket_queue[num_bucket][front++];
+}
+
 void generate_input(int *, int);
 void merge_result(int *, int, int, int);
 int partition(int *, int, int);
@@ -259,10 +271,13 @@ void radix_sort(int *input_data, int *running_time_of_sort)
 {
         clock_t start;
         clock_t end;
+        int digit = 0;
+        for (int i = input_data->data[0]; i < digit; i /= 10)
+                start = clock();
 
-        start = clock();
+        for (int i = 0; i < digit; i++)
 
-        end = clock();
+                end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
 void bucket_sort(int *input_data, int *running_time_of_sort)
