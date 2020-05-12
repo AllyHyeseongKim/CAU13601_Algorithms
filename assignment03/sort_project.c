@@ -41,11 +41,14 @@ void swap(int *a, int *b)
         *b = temp;
 }
 
-void generate_input(int *input_data, int size_of_input);
+int sorted_inputs[1000];
 
-void bubble_sort(Inputs *input_data);
-void insertion_sort(Inputs *input_data);
-void merge_sort(int *input_data, int *running_time_of_sort);
+void generate_input(int *, int);
+void merge_result(Inputs *input_data, int left_point, int middle_point, int right_point);
+
+void bubble_sort(Inputs *);
+void insertion_sort(Inputs *);
+void merge_sort(Inputs *input_data, int left_point, int right_point);
 void quick_sort(int *input_data, int *running_time_of_sort);
 void radix_sort(int *input_data, int *running_time_of_sort);
 void bucket_sort(int *input_data, int *running_time_of_sort);
@@ -98,9 +101,9 @@ int main(void)
         insertion_sort(&input_data[0]);
         insertion_sort(&input_data[1]);
         insertion_sort(&input_data[2]);
-        merge_sort(input_data[0].data, &input_data[0].running_time[2].value);
-        merge_sort(input_data[1].data, &input_data[1].running_time[2].value);
-        merge_sort(input_data[2].data, &input_data[2].running_time[2].value);
+        merge_sort(&input_data[0], 0, input_data[0].key - 1);
+        merge_sort(&input_data[1], 0, input_data[1].key - 1);
+        merge_sort(&input_data[2], 0, input_data[2].key - 1);
         quick_sort(input_data[0].data, &input_data[0].running_time[3].value);
         quick_sort(input_data[1].data, &input_data[1].running_time[3].value);
         quick_sort(input_data[2].data, &input_data[2].running_time[3].value);
@@ -169,13 +172,48 @@ void insertion_sort(Inputs *input_data)
         end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
-void merge_sort(int *input_data, int *running_time_of_sort)
+void merge_result(Inputs *input_data, int left_point, int middle_point, int right_point)
+{
+        int i = left_point;
+        int j = middle_point;
+        int k = left_point;
+
+        for (; i <= middle_point && j <= right_point;)
+        {
+                if (input_data->data[i] <= input_data->data[j])
+                        sorted_inputs[k++] = input_data->data[i++];
+                else
+                        sorted_inputs[k++] = input_data->data[j++];
+        }
+
+        if (i < middle_point)
+        {
+                for (int l = j; l <= right_point; l++)
+                        sorted_inputs[k++] = input_data->data[l];
+        }
+        else
+        {
+                for (int l = i; l <= middle_point; l++)
+                        sorted_inputs[k++] = input_data->data[l];
+        }
+
+        for (int l = left_point; l <= right_point; l++)
+                input_data->data[l] = sorted_inputs[l];
+}
+void merge_sort(Inputs *input_data, int left_point, int right_point)
 {
         clock_t start;
         clock_t end;
+        int middle_point = (left_point + right_point) / 2;
 
         start = clock();
 
+        if (left_point < right_point)
+        {
+                merge_sort(&input_data, left_point, middle_point);
+                merge_sort(&input_data, middle_point + 1, right_point);
+                merge_result(&input_data, left_point, middle_point, right_point);
+        }
         end = clock();
         input_data->running_time[0] = (double)(end - start);
 }
