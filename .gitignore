@@ -1,5 +1,5 @@
-# Created by https://www.gitignore.io/api/macos,cmake,clion,vim
-# Edit at https://www.gitignore.io/?templates=macos,cmake,clion,vim
+# Created by https://www.gitignore.io/api/macos,cmake,clion,vim,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=macos,cmake,clion,vim,visualstudiocode
 
 ### C ###
 # Prerequisites
@@ -213,4 +213,15 @@ tags
 # Coc configuration directory
 .vim
 
-# End of https://www.gitignore.io/api/c,macos,cmake,clion,vim
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.gitignore.io/api/c,macos,cmake,clion,vim,visualstudiocode
