@@ -18,18 +18,6 @@ void swap(int *a, int *b)
         *b = temp;
 }
 
-int bucket_queue[10][1000];
-int *front;
-int *rear;
-void put(int num_bucket, int input)
-{
-        bucket_queue[num_bucket][++rear[num_bucket]] = input;
-}
-int get(int num_bucket)
-{
-        return bucket_queue[num_bucket][front[num_bucket]++];
-}
-
 int trial = 0;
 
 void generate_input(int *, int);
@@ -37,7 +25,6 @@ void merge(Inputs *, int, int, int);
 void merge_sorting(Inputs *, int, int);
 int partition(Inputs *, int, int);
 void quick_sorting(Inputs *, int, int);
-void put_bucket(int *, int);
 
 void bubble_sort(Inputs *);
 void insertion_sort(Inputs *);
@@ -57,12 +44,13 @@ int main(void)
         generate_input(input_data[0].data, input_data[0].key);
 
         printf("-------------------------------------------------------------------------------------\n");
+        printf("-------------------------------------------------------------------------------------\n");
         printf("[INPUTS]      ");
         for (int i = 0; i < input_data[0].key; i++)
                 printf("%2d    ", input_data[0].data[i]);
         printf("\n");
         printf("-------------------------------------------------------------------------------------\n");
-        /*
+
         input_data[1].key = 100;
         input_data[1].data = malloc(sizeof(int) * input_data[1].key);
         generate_input(input_data[1].data, input_data[1].key);
@@ -70,7 +58,7 @@ int main(void)
         input_data[2].key = 1000;
         input_data[2].data = malloc(sizeof(int) * input_data[2].key);
         generate_input(input_data[2].data, input_data[2].key);
-*/
+
         printf("-------------------------------------------------------------------------------------\n");
         printf("                                       BUBBLE SORT\n");
         printf("-------------------------------------------------------------------------------------\n");
@@ -84,12 +72,17 @@ int main(void)
         for (int i = 0; i < input_data[0].key; i++)
                 printf("%2d    ", input_data[0].data[i]);
         printf("\n");
-        //        bubble_sort(&input_data[1]);
-        //        bubble_sort(&input_data[2]);
+        printf("-------------------------------------------------------------------------------------\n");
+        printf("BUBBLE SORT INPUT 10 DONE\n");
+        bubble_sort(&input_data[1]);
+        printf("BUBBLE SORT INPUT 100 DONE\n");
+        bubble_sort(&input_data[2]);
+        printf("BUBBLE SORT INPUT 1000 DONE\n");
+        printf("-------------------------------------------------------------------------------------\n");
 
         generate_input(input_data[0].data, input_data[0].key);
-        //generate_input(input_data[1].data, input_data[1].key);
-        //generate_input(input_data[2].data, input_data[2].key);
+        generate_input(input_data[1].data, input_data[1].key);
+        generate_input(input_data[2].data, input_data[2].key);
         printf("-------------------------------------------------------------------------------------\n");
         printf("                                     INSERTION SORT\n");
         printf("-------------------------------------------------------------------------------------\n");
@@ -103,13 +96,17 @@ int main(void)
         for (int i = 0; i < input_data[0].key; i++)
                 printf("%2d    ", input_data[0].data[i]);
         printf("\n");
-
-        //        insertion_sort(&input_data[1]);
-        //        insertion_sort(&input_data[2]);
+        printf("-------------------------------------------------------------------------------------\n");
+        printf("INSERTION SORT INPUT 10 DONE\n");
+        insertion_sort(&input_data[1]);
+        printf("INSERTION SORT INPUT 100 DONE\n");
+        insertion_sort(&input_data[2]);
+        printf("INSERTION SORT INPUT 1000 DONE\n");
+        printf("-------------------------------------------------------------------------------------\n");
 
         generate_input(input_data[0].data, input_data[0].key);
-        //generate_input(input_data[1].data, input_data[1].key);
-        //generate_input(input_data[2].data, input_data[2].key);
+        generate_input(input_data[1].data, input_data[1].key);
+        generate_input(input_data[2].data, input_data[2].key);
         printf("-------------------------------------------------------------------------------------\n");
         printf("                                       MERGE SORT\n");
         printf("-------------------------------------------------------------------------------------\n");
@@ -123,12 +120,17 @@ int main(void)
         for (int i = 0; i < input_data[0].key; i++)
                 printf("%2d    ", input_data[0].data[i]);
         printf("\n");
-        //        merge_sort(&input_data[1], 0, input_data[1].key - 1);
-        //        merge_sort(&input_data[2], 0, input_data[2].key - 1);
+        printf("-------------------------------------------------------------------------------------\n");
+        printf("MERGE SORT INPUT 10 DONE\n");
+        merge_sort(&input_data[1], 0, input_data[1].key - 1);
+        printf("MERGE SORT INPUT 100 DONE\n");
+        merge_sort(&input_data[2], 0, input_data[2].key - 1);
+        printf("MERGE SORT INPUT 1000 DONE\n");
+        printf("-------------------------------------------------------------------------------------\n");
 
         generate_input(input_data[0].data, input_data[0].key);
-        //generate_input(input_data[1].data, input_data[1].key);
-        //generate_input(input_data[2].data, input_data[2].key);
+        generate_input(input_data[1].data, input_data[1].key);
+        generate_input(input_data[2].data, input_data[2].key);
         printf("-------------------------------------------------------------------------------------\n");
         printf("                                       QUICK SORT\n");
         printf("-------------------------------------------------------------------------------------\n");
@@ -142,12 +144,17 @@ int main(void)
         for (int i = 0; i < input_data[0].key; i++)
                 printf("%2d    ", input_data[0].data[i]);
         printf("\n");
-        //        quick_sort(&input_data[1], 0, input_data[1].key - 1);
-        //        quick_sort(&input_data[2], 0, input_data[2].key - 1);
+        printf("-------------------------------------------------------------------------------------\n");
+        printf("QUICK SORT INPUT 10 DONE\n");
+        quick_sort(&input_data[1], 0, input_data[1].key - 1);
+        printf("QUICK SORT INPUT 100 DONE\n");
+        quick_sort(&input_data[2], 0, input_data[2].key - 1);
+        printf("QUICK SORT INPUT 1000 DONE\n");
+        printf("-------------------------------------------------------------------------------------\n");
 
         generate_input(input_data[0].data, input_data[0].key);
-        //generate_input(input_data[1].data, input_data[1].key);
-        //generate_input(input_data[2].data, input_data[2].key);
+        generate_input(input_data[1].data, input_data[1].key);
+        generate_input(input_data[2].data, input_data[2].key);
         printf("-------------------------------------------------------------------------------------\n");
         printf("                                       RADIX SORT\n");
         printf("-------------------------------------------------------------------------------------\n");
@@ -160,12 +167,17 @@ int main(void)
         for (int i = 0; i < input_data[0].key; i++)
                 printf("%2d    ", input_data[0].data[i]);
         printf("\n");
-        //        radix_sort(&input_data[1]);
-        //        radix_sort(&input_data[2]);
+        printf("-------------------------------------------------------------------------------------\n");
+        printf("RADIX SORT INPUT 100 DONE\n");
+        radix_sort(&input_data[1]);
+        printf("RADIX SORT INPUT 100 DONE\n");
+        radix_sort(&input_data[2]);
+        printf("RADIX SORT INPUT 1000 DONE\n");
+        printf("-------------------------------------------------------------------------------------\n");
 
         generate_input(input_data[0].data, input_data[0].key);
-        //generate_input(input_data[1].data, input_data[1].key);
-        //generate_input(input_data[2].data, input_data[2].key);
+        generate_input(input_data[1].data, input_data[1].key);
+        generate_input(input_data[2].data, input_data[2].key);
         printf("-------------------------------------------------------------------------------------\n");
         printf("                                       BUCKET SORT\n");
         printf("-------------------------------------------------------------------------------------\n");
@@ -178,14 +190,19 @@ int main(void)
         for (int i = 0; i < input_data[0].key; i++)
                 printf("%2d    ", input_data[0].data[i]);
         printf("\n");
-        //        bucket_sort(&input_data[1]);
-        //        bucket_sort(&input_data[2]);
+        printf("-------------------------------------------------------------------------------------\n");
+        printf("RADIX SORT INPUT 10 DONE\n");
+        bucket_sort(&input_data[1]);
+        printf("BUCKET SORT INPUT 100 DONE\n");
+        bucket_sort(&input_data[2]);
+        printf("BUCKET SORT INPUT 1000 DONE\n");
+        printf("-------------------------------------------------------------------------------------\n");
 
         print_table(input_data);
 
         free(input_data[0].data);
-        //        free(input_data[1].data);
-        //        free(input_data[2].data);
+        free(input_data[1].data);
+        free(input_data[2].data);
 
         return 0;
 }
@@ -213,10 +230,12 @@ void bubble_sort(Inputs *input_data)
                         if (input_data->data[j] > input_data->data[j + 1])
                         {
                                 swap(&input_data->data[j], &input_data->data[j + 1]);
+                                /*
                                 printf("[TRIAL%2d]      ", trial++);
                                 for (int k = 0; k < input_data->key; k++)
                                         printf("%2d    ", input_data->data[k]);
                                 printf("\n");
+                                */
                         }
                 }
         }
@@ -240,10 +259,12 @@ void insertion_sort(Inputs *input_data)
                 {
                         input_data->data[j + 1] = input_data->data[j];
                         input_data->data[j] = key;
+                        /*
                         printf("[TRIAL%2d]      ", trial++);
                         for (int k = 0; k < input_data->key; k++)
                                 printf("%2d    ", input_data->data[k]);
                         printf("\n");
+                        */
                 }
         }
 
@@ -276,10 +297,12 @@ void merge(Inputs *input_data, int left_point, int middle_point, int right_point
 
         for (; j < right_point - middle_point;)
                 input_data->data[k++] = right_sorted[j++];
+        /*
         printf("[TRIAL%2d]      ", trial++);
         for (int l = 0; l < input_data->key; l++)
                 printf("%2d    ", input_data->data[l]);
         printf("\n");
+        */
 }
 void merge_sorting(Inputs *input_data, int left_point, int right_point)
 {
@@ -315,18 +338,22 @@ int partition(Inputs *input_data, int left_point, int right_point)
                 if (input_data->data[j] < pivot)
                 {
                         swap(&input_data->data[++i], &input_data->data[j]);
+                        /*
                         printf("[TRIAL%2d]      ", trial++);
                         for (int l = 0; l < input_data->key; l++)
                                 printf("%2d    ", input_data->data[l]);
                         printf("\n");
+                        */
                 }
         }
 
         swap(&input_data->data[i + 1], &input_data->data[right_point]);
+        /*
         printf("[TRIAL%2d]      ", trial++);
         for (int l = 0; l < input_data->key; l++)
                 printf("%2d    ", input_data->data[l]);
         printf("\n");
+        */
 
         return i + 1;
 }
@@ -390,32 +417,16 @@ void radix_sort(Inputs *input_data)
                         for (int j = 0; j < count[i]; j++)
                                 input_data->data[k++] = bucket[i][j];
                 }
+                /*
                 printf("[TRIAL%2d]      ", trial++);
                 for (int l = 0; l < input_data->key; l++)
                         printf("%2d    ", input_data->data[l]);
                 printf("\n");
+                */
         }
 
         end = clock();
         input_data->running_time[4] = (double)(end - start) / CLOCKS_PER_SEC;
-}
-void put_bucket(int *bucket, int data)
-{
-        int point = 0;
-        int j = 0;
-
-        for (j = 0; bucket[j] > 0; j++)
-        {
-                if (bucket[j] < data)
-                        point = j + 1;
-        }
-        int top = j + 1;
-
-        for (int i = top; i > point; i--)
-        {
-                bucket[i] = bucket[i - 1];
-        }
-        bucket[point] = data;
 }
 void bucket_sort(Inputs *input_data)
 {
@@ -437,7 +448,7 @@ void bucket_sort(Inputs *input_data)
                 for (int i = 0; i < num_buckets; i++)
                         bucket[i] = (int *)malloc(sizeof(int) * size_buckets);
                 break;
-        case 2:
+        case 10:
                 num = 10;
                 num_buckets = 10;
                 size_buckets = input_data->key / num_buckets;
@@ -445,8 +456,8 @@ void bucket_sort(Inputs *input_data)
                 for (int i = 0; i < num_buckets; i++)
                         bucket[i] = (int *)malloc(sizeof(int) * size_buckets);
                 break;
-        case 3:
-                num = 20;
+        case 100:
+                num = 50;
                 num_buckets = 20;
                 size_buckets = input_data->key / num_buckets;
                 bucket = (int **)malloc(sizeof(int *) * num_buckets);
@@ -464,6 +475,7 @@ void bucket_sort(Inputs *input_data)
                         bucket_num = input_data->data[i] / num - 1;
                 else
                         bucket_num = input_data->data[i] / num;
+
                 int j = 0;
                 for (; j < size_buckets && bucket[bucket_num][j] < input_data->data[i] && bucket[bucket_num][j] > 0;)
                         j++;
@@ -483,11 +495,12 @@ void bucket_sort(Inputs *input_data)
                 for (int j = 0; j < size_buckets; j++)
                         input_data->data[k++] = bucket[i][j];
         }
+        /*
         printf("[TRIAL%2d]      ", trial++);
         for (int l = 0; l < input_data->key; l++)
                 printf("%2d    ", input_data->data[l]);
         printf("\n");
-
+*/
         end = clock();
         input_data->running_time[5] = (double)(end - start) / CLOCKS_PER_SEC;
 
@@ -503,7 +516,7 @@ void print_table(Inputs *input_data)
         printf("-------------------------------------------------------------------------------------\n");
         printf("                   BUBBLE   INSERTION       MERGE       QUICK       RADIX      BUCKET\n");
         printf("[10   inputs]    %lf    %lf    %lf    %lf    %lf    %lf\n", input_data[0].running_time[0], input_data[0].running_time[1], input_data[0].running_time[2], input_data[0].running_time[3], input_data[0].running_time[4], input_data[0].running_time[5]);
-        //        printf("[100  inputs]    %lf    %lf    %lf    %lf    %lf    %lf\n", input_data[1].running_time[0], input_data[1].running_time[1], input_data[1].running_time[2], input_data[1].running_time[3], input_data[1].running_time[4], input_data[1].running_time[5]);
-        //        printf("[1000 inputs]    %lf    %lf    %lf    %lf    %lf    %lf\n", input_data[2].running_time[0], input_data[2].running_time[1], input_data[2].running_time[2], input_data[2].running_time[3], input_data[2].running_time[4], input_data[2].running_time[5]);
+        printf("[100  inputs]    %lf    %lf    %lf    %lf    %lf    %lf\n", input_data[1].running_time[0], input_data[1].running_time[1], input_data[1].running_time[2], input_data[1].running_time[3], input_data[1].running_time[4], input_data[1].running_time[5]);
+        printf("[1000 inputs]    %lf    %lf    %lf    %lf    %lf    %lf\n", input_data[2].running_time[0], input_data[2].running_time[1], input_data[2].running_time[2], input_data[2].running_time[3], input_data[2].running_time[4], input_data[2].running_time[5]);
         printf("-------------------------------------------------------------------------------------\n");
 }
