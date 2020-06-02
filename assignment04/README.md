@@ -1,1 +1,1 @@
-Assignment04: Open Source SW Project (Deep Learning) - Tensorflow MNIST example
+# Assignment04: Open Source SW Project (Deep Learning) - Tensorflow MNIST example
