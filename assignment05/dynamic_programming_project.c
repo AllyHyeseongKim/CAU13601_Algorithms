@@ -3,6 +3,7 @@
 #include <time.h>
 #include <limits.h>
 
+
 int fibonacci(int n) {
     int f[n + 2];
 
@@ -182,20 +183,95 @@ void matrix_chain_mult(int *dimension, int **mult_result) {
     }
 }
 
+
+#define MAX_WEIGHT_CAPACITY 16
+#define NUM_ITEMS 6
+
+typedef struct ITEM {
+  int id;
+  int weight;
+  int value;
+  float density;
+} Item;
+
+void fractional_knapsack(Item *items) {
+
+    // Sort items by density in descending order
+    Item temp;
+    for (int i = 1; i < NUM_ITEMS; i++) {
+        for (int j = 0; j < NUM_ITEMS - i; j++) {
+            if (items[j + 1].density > items [j].density) {
+                temp = items[j + 1];
+                items[j + 1] = items[j];
+                items[j] = temp;
+            }
+        }
+    }
+    printf("Sorted items by density in descending order:\n");
+    printf(" ---------------------------------\n");
+    printf("| ITEM | WEIGHT | VALUE | DENSITY |\n");
+    printf("|------|--------|-------|---------|\n");
+    for (int i = 0; i < NUM_ITEMS; i++) {
+        printf("|   %d  |   %2d   |   %2d  |    %2.0f   |", items[i].id, items[i].weight, items[i].value, items[i].density);
+        printf("\n");
+    }
+    printf(" ---------------------------------\n");
+    printf("\n");
+
+    printf("Result of Fractional Knapsack problem by a greedy strategy:\n");
+    printf(" ---------------------------------------------------------------\n");
+    printf("| ITEM | FRACTION | WEIGHT | VALUE | TOTAL WEIGHT | TOTAL VALUE |\n");
+    printf("|------|----------|--------|-------|--------------|-------------|\n");
+    int total_weight = 0;
+    int total_value = 0;
+    float fraction[NUM_ITEMS] = {0};
+
+    for(int i = 0; i < NUM_ITEMS; i++) {
+        if(items[i].weight + total_weight <= MAX_WEIGHT_CAPACITY) {
+            fraction[i] = 1;
+            total_weight += items[i].weight;
+            total_value += items[i].value;
+
+            printf("|   %d  |     %0.f    |    %d   |   %2d  |      %2d      |     %3d     |\n", items[i].id, fraction[i], items[i].weight, items[i].value, total_weight, total_value);
+        } else {
+            int weight = (MAX_WEIGHT_CAPACITY - total_weight);
+            fraction[i] = items[i].weight / weight;
+            int value = items[i].value / fraction[i];
+
+            total_weight += weight;
+            total_value += value;
+
+            printf("|   %d  |    1/%0.f   |    %d   |   %2d  |      %2d      |     %3d     |\n", items[i].id, fraction[i], weight, value, total_weight, total_value);
+
+            break;
+        }
+    }
+    printf(" ---------------------------------------------------------------\n");
+
+    printf("Result: ");
+    int i;
+    for (i = 0; fraction[i + 1] > 0; i++) {
+        printf("%d(fraction: %0.f), ", items[i].id, fraction[i]);
+    }
+    printf("%d(fraction: 1/%0.f)\n", items[i].id, fraction[i]);
+    printf("TOTAL WEIGHT: %d, MAXIMUM VALUE: %d\n", total_weight, total_value);
+}
+
+
 int main() {
 
     // Exercise 01: Algorithm of Fibonacci numbers using dynamic programming
-    printf("-------------------------------------------------------\n");
-    printf("      FIBONACCI NUMBER USING DYNAMIC PROGRAMMING\n");
-    printf("-------------------------------------------------------\n");
+    printf("---------------------------------------------------------------------------------\n");
+    printf("                   FIBONACCI NUMBER USING DYNAMIC PROGRAMMING\n");
+    printf("---------------------------------------------------------------------------------\n");
     printf(" 5-th fibonacci number: %d \n", fibonacci(5));
     printf("10-th fibonacci number: %d \n", fibonacci(10));
 
 
     // Exercise 02: Matrix-chain multiplication algorithm using dynamic programming
-    printf("-------------------------------------------------------\n");
-    printf(" MATRIX-CHAIN MULTIPLICATION USING DYNAMIC PROGRAMMING\n");
-    printf("-------------------------------------------------------\n");
+    printf("---------------------------------------------------------------------------------\n");
+    printf("              MATRIX-CHAIN MULTIPLICATION USING DYNAMIC PROGRAMMING\n");
+    printf("---------------------------------------------------------------------------------\n");
 
     int dimension[NUM_MATRICES + 1] = {5, 3, 7, 10};
     int **mult_result;
@@ -212,6 +288,32 @@ int main() {
         }
         printf("\n");
     }
+
+
+    // Exercise 03: Algorithm for the Fractional knapsack problem by a Greedy strategy
+    printf("---------------------------------------------------------------------------------\n");
+    printf("                FRACTIONAL KNAPSACK PROBLEM USING GREEDY STRATEGY\n");
+    printf("---------------------------------------------------------------------------------\n");
+
+    Item items[NUM_ITEMS] = {{1, 6,  60, 0},
+                             {2, 10, 20, 0},
+                             {3, 3,  12, 0},
+                             {4, 5,  80, 0},
+                             {5, 1,  30, 0},
+                             {6, 3,  60, 0}};
+    for (int i = 0; i < NUM_ITEMS; i++) {
+        items[i].density = items[i].value / items[i].weight;
+    }
+    printf("Input items:\n");
+    printf(" ---------------------------------\n");
+    printf("| ITEM | WEIGHT | VALUE | DENSITY |\n");
+    printf("|------|--------|-------|---------|\n");
+    for (int i = 0; i < NUM_ITEMS; i++) {
+        printf("|   %d  |   %2d   |   %2d  |    %2.0f   |", items[i].id, items[i].weight, items[i].value, items[i].density);
+        printf("\n");
+    }
+    printf(" ---------------------------------\n");
+    fractional_knapsack(items);
 
     return 0;
 }
