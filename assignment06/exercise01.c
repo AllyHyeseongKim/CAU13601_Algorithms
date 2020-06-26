@@ -74,24 +74,7 @@ void LCS_length(char *X, char *Y, int m, int n)
         }
     }
 
-    for (int i = 0; i < m + 1; i++)
-    {
-        for (int j = 0; j < n + 1; j++)
-        {
-            printf("%d", c[i][j]);
-        }
-        printf("\n");
-    }
-
-    for (int i = 0; i < m + 1; i++)
-    {
-        for (int j = 0; j < n + 1; j++)
-        {
-            printf("%d", b[i][j]);
-        }
-        printf("\n");
-    }
-
+    printf("LCS: ");
     LCS_print(b, X, m, n);
     printf("\n");
 
