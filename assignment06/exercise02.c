@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <limits.h>
 
 #define MAX_SIZE 1000
 
@@ -140,7 +140,6 @@ typedef struct graph
     int num_vertices;
     NODE **adjLists;
 } GRAPH;
-
 /*
 void print_path(GRAPH *graph, int start_vertex, VERTEX *vertex)
 {
@@ -158,6 +157,7 @@ void print_path(GRAPH *graph, int start_vertex, VERTEX *vertex)
         printf("%c ", get_vertex(vertex->vertex));
     }
 }
+*/
 void print_queue(QUEUE *queue)
 {
     if (is_empty(queue))
@@ -174,7 +174,6 @@ void print_queue(QUEUE *queue)
         printf("\n");
     }
 }
-*/
 
 void BFS(GRAPH *graph, int start_vertex)
 {
@@ -183,7 +182,7 @@ void BFS(GRAPH *graph, int start_vertex)
         if (vertices[i].vertex != start_vertex)
         {
             vertices[i].color = WHITE;
-            vertices[i].d = INFINITY;
+            vertices[i].d = INT_MAX;
             vertices[i].pi = NULL;
         }
         else
@@ -199,7 +198,7 @@ void BFS(GRAPH *graph, int start_vertex)
 
     for (; !is_empty(queue);)
     {
-        //print_queue(queue);
+        print_queue(queue);
 
         int current_vertex = dequeue(queue);
 
@@ -273,7 +272,7 @@ void print_d()
     printf("------------------------\n");
     for (int i = 0; i < 8; i++)
     {
-        printf("distance to vertex %c: %2d\n", get_vertex(vertices[i].vertex), vertices[i].d);
+        printf("distance to vertex %c: %d\n", get_vertex(vertices[i].vertex), vertices[i].d);
     }
 }
 void print_pi()
